@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.BasicParamsMapper">
+    <resultMap id="selelctBasicParamsByDevIdRM" type="tk.mybatis.springboot.model.BasicParams">
+        <constructor>
+            <idArg column="appId" javaType="String"/>
+            <arg column="secret" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="selectNeedAuthorizeBasicParamsByDevIdRM" type="tk.mybatis.springboot.model.BasicParams">
+        <constructor>
+            <idArg column="appId" javaType="String"/>
+            <arg column="secret" javaType="String"/>
+            <arg column="carId" javaType="String"/>
+            <arg column="userId" javaType="String"/>
+        </constructor>
+    </resultMap>
+    <!--<select id="selelctThreeNoesBasicParamsByDevId" resultMap="selelctBasicParamsByDevIdRM">-->
+    <!--SELECT app_id AS "appId",app_secret AS "secret" FROM t_api_application where dev_id=#{dev_id} and status=1 and delete_flag=1 ORDER BY insert_time desc limit 1;-->
+    <!--</select>-->
+
+    <select id="selelctThreeNoesBasicParamsByDevId" resultMap="selelctBasicParamsByDevIdRM">
+        SELECT app_id AS "appId",app_secret AS "secret" FROM t_api_application where status=1 and delete_flag=1 ORDER BY insert_time desc limit 1;
+    </select>
+
+    <select id="selectNeedAuthorizeBasicParamsByDevId" resultMap="selectNeedAuthorizeBasicParamsByDevIdRM">
+      SELECT
+	info.app_id AS "appId",
+	info.token AS "secret",
+	info.user_id AS "userId",
+	cmds.car_id AS "carId"
+FROM
+	t_api_application app
+LEFT JOIN t_user_app_token_info info ON info.app_id = app.app_id LEFT JOIN t_cmds_machine cmds on cmds.user_id=info.user_id where app.dev_id=#{dev_id} and cmds.car_id is not null and cmds.user_id is not NULL and info.expire_time > #{expire_time} ORDER BY info.expire_time desc LIMIT 1
+    </select>
+
+</mapper>

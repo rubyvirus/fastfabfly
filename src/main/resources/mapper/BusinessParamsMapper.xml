@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tk.mybatis.springboot.mapper.BusinessParamsMapper">
+    <resultMap id="selelctBasicParamsByDevIdRM" type="tk.mybatis.springboot.model.BusinessParams">
+        <constructor>
+            <idArg column="appId" javaType="String"/>
+            <arg column="secret" javaType="String"/>
+        </constructor>
+    </resultMap>
+
+    <select id="selelctThreeNoesBasicParamsByDevId" resultMap="selelctBasicParamsByDevIdRM">
+        SELECT app_id AS "appId",app_secret AS "secret" FROM t_api_application where dev_id=#{dev_id} and status=1 and delete_flag=1 ORDER BY insert_time desc limit 1;
+    </select>
+
+</mapper>

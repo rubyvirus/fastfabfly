@@ -1,0 +1,53 @@
+server:
+    port: 9090
+    context-path:
+
+logging:
+    file: fastfabfly.log
+    level: trace
+    path: c:/test
+
+spring:
+    datasource:
+        name: test
+        url: jdbc:mysql://172.16.1.158:3306/openapi
+        username: admin
+        password: admin
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    http:
+      encoding:
+        force-response: true
+        charset: utf-8
+        enabled: true
+
+mybatis:
+    type-aliases-package: tk.mybatis.springboot.model
+    mapper-locations: classpath:mapper/*.xml
+
+mapper:
+    mappers:
+        - tk.mybatis.springboot.util.MyMapper
+    not-empty: false
+    identity: MYSQL
+
+# 开发平台配置信息
+openapiProps:
+    devId: 5356794601950675658
+    basicUrl: https://open.kartor.cn
+    nonce: 12345678
+    excelPath: c:/test
